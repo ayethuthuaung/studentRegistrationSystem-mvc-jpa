@@ -2,6 +2,7 @@ package student.com.repository;
 
 import org.springframework.stereotype.Repository;
 
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import student.com.models.UserBean;
@@ -47,5 +48,24 @@ public class UserRepository {
             }
         }
     }
+	
+	public UserBean findByEmail(String email) {
+		EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();;
+		UserBean userBean = null;
+		try {
+			//em = JPAUtil.getEntityManagerFactory().createEntityManager();
+			System.out.println("Hi3");
+			userBean = em.createQuery("SELECT u FROM UserBean u WHERE u.email=:email", UserBean.class)
+					.setParameter("email", email).getSingleResult();
+			System.out.println("Hi4");
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			System.out.println(e.getMessage());
+
+		} finally {
+			em.close();
+		}
+		return userBean;
+	}
 
 }

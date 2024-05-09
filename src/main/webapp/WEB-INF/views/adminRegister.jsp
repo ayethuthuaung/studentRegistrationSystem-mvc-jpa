@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="shortcut icon" href="assets/images/favicon.ico" />
+
 </head>
 <body>
 	<div class="container-scroller">
@@ -121,15 +122,17 @@
 													<div class="col-sm-9">
 														<form:input type="text" class="form-control"
 															path="address" />
+															<form:input type="hidden" class="form-control"
+															path="password" id="passwordInput" />
 														<form:errors path="address" style="color:red;"></form:errors>
 													</div>
 												</div>
 											</div>
 										</div>
 										<div class="mt-3">
-											<button type="submit"
+											<button 
 												class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-												onclick="sendMail();">SignIn</button>
+												id="signInButton">SignIn</button>
 										</div>
 
 									</form:form>
@@ -140,6 +143,7 @@
 				</div>
 				<jsp:include page="footer.jsp"></jsp:include>
 			</div>
+			
 			<!-- main-panel ends -->
 		</div>
 		<!-- page-body-wrapper ends -->
@@ -155,10 +159,16 @@
 	<script src="assets/js/hoverable-collapse.js"></script>
 	<script src="assets/js/misc.js"></script>
 	<!-- endinject -->
+	<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 	<!-- Custom js for this page -->
 	<script src="assets/js/file-upload.js"></script>
 	<!-- End custom js for this page -->
 	<script>
+	document.addEventListener("DOMContentLoaded", function() {
+	console.log("hi")
+	const passwordInput = document.getElementById("passwordInput")
+	passwordInput.value = generateRandomPassword(6);
+	let passwordToEmail = passwordInput.value;
      function generateRandomPassword(length) {
      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
      let password = "";
@@ -168,12 +178,13 @@
      }
      return password;
      }
+     
      function sendMail() {
          console.log("Hi");
          (function () {
              emailjs.init("WsE2hFeJ5wtOCXh6w"); // account public key
          })();
-         let password = generateRandomPassword(6);
+         let password = passwordToEmail;
          var params = {
              sendername: `ACE Inspiration`,
              to: document.querySelector("#to").value,
@@ -195,7 +206,8 @@
          .catch();
 
      }
-     
+     document.getElementById("signInButton").addEventListener("click", sendMail);
+	});
  </script>
 </body>
 </html>

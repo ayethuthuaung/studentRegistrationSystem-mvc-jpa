@@ -47,9 +47,9 @@ public class CourseRepository {
 			transaction.begin();
 			
 			Query query = em.createQuery(
-					"UPDATE Course c SET c.courseId = :courseId, c.cname = :cname WHERE c.id = :id");
+					"UPDATE CourseBean c SET c.courseId = :courseId, c.name = :name WHERE c.id = :id");
 				query.setParameter("courseId", courseBean.getCourseId());
-				query.setParameter("cname", courseBean.getName());
+				query.setParameter("name", courseBean.getName());
 				query.setParameter("id", courseBean.getId());
 				
 				i = query.executeUpdate();
@@ -100,7 +100,7 @@ public class CourseRepository {
 	    try {
 	        em = JPAUtil.getEntityManagerFactory().createEntityManager();
 
-	        courseBean = em.createQuery("SELECT c FROM Course c WHERE c.id = :id", CourseBean.class)
+	        courseBean = em.createQuery("SELECT c FROM CourseBean c WHERE c.id = :id", CourseBean.class)
 	                  .setParameter("id", id)
 	                  .getSingleResult();
 
@@ -121,7 +121,7 @@ public class CourseRepository {
 	      
 	      try {
 	    	  em = JPAUtil.getEntityManagerFactory().createEntityManager(); 
-	    	  courseList = em.createQuery("SELECT c FROM Course c",CourseBean.class).getResultList();
+	    	  courseList = em.createQuery("SELECT c FROM CourseBean c",CourseBean.class).getResultList();
 	      }finally {
 	    	  if(em != null) {
 	    		  em.close();

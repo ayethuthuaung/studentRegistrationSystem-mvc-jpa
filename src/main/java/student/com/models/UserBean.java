@@ -48,6 +48,8 @@ public class UserBean {
 	 private String address;
 	 
 	 private String role;
+	 
+	 private String password;
 	
 
 }

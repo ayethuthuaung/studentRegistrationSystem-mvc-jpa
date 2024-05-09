@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
 import lombok.AllArgsConstructor;
 import student.com.dto.UserDto;
 import student.com.models.UserBean;
@@ -32,10 +33,61 @@ public class UserController {
 	private final Helper helper;
 	
 	
-	@GetMapping("/")
+	@GetMapping({"/", "/dashboard"})
 	public String home() {
-		return "home";
+		return "dashboard";
 	}
+	
+	@GetMapping("/login")
+	public ModelAndView loginPage(Model model) {
+		
+		return new ModelAndView("login","userDto",new UserDto());
+	}
+	
+	@PostMapping("/login")
+    public String login(@ModelAttribute("userDto") UserDto userDto, HttpSession session, ModelMap model) {
+    	
+    	if (userDto.getEmail() == null || userDto.getEmail().isEmpty() || userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
+            
+            model.addAttribute("error", "Email and password are required!!!");
+            model.addAttribute("errorMessageColor", "red");
+            
+            return "login"; 
+        }
+    	
+       
+        UserDto loggedInUser = userService.getUserByEmail(userDto.getEmail());
+
+        if (loggedInUser != null && loggedInUser.getPassword().equals(userDto.getPassword())) {
+            session.setAttribute("loggedInUser", loggedInUser);
+            if (loggedInUser.getRole().equalsIgnoreCase("admin")) {               
+                return "redirect:/dashboard";
+            } else if (loggedInUser.getRole().equalsIgnoreCase("user")) {               
+                return "redirect:/home";             
+            }
+               
+//                if (loggedInUser.isIs_disabled()) {
+//                   
+//                    model.addAttribute("error", "This account is disabled.");
+//                    return "login";
+//                    
+//                } else {
+//                    return "/user";
+//                }
+            
+        } else {
+            // Authentication failed
+            if (loggedInUser == null) {
+                model.addAttribute("error", "Invalid email.");
+            } else {
+                model.addAttribute("error", "Invalid password.");
+            }
+            return "login"; 
+        }
+       
+        model.addAttribute("error", "Invalid email or password.");
+        return "login";
+    }
 	
 	@GetMapping("/addAdmin")
 	public ModelAndView userCreate(Model model) {
@@ -45,6 +97,7 @@ public class UserController {
 	
 	@PostMapping("/addAdmin")
 	public String userCreate(@ModelAttribute("userDto") @Validated UserDto userDto , BindingResult bs, ModelMap model, HttpSession session) {
+		System.out.println(userDto.getPassword());
 		if(bs.hasErrors()) {
 			return "adminRegister";
 		}
@@ -61,7 +114,7 @@ public class UserController {
 				return "adminRegister";
 			}
 		}
-		return "redirect:/";
+		return "adminRegister";
 	}
 
 }

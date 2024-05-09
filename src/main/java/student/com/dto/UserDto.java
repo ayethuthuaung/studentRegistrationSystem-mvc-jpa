@@ -9,5 +9,5 @@ import lombok.Setter;
 @Setter
 public class UserDto {
 	private int id;
-	private String code, name, email, gender, phone, dob, address, role;
+	private String code, name, email, gender, phone, dob, address, role, password;
 }
