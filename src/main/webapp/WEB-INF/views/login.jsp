@@ -47,6 +47,8 @@
                     </div>
                     <a href="#" class="auth-link text-primary">Forgot password?</a>
                   </div>
+                  <h6 class="font-weight-light" style="color: red;">${loginError }</h6>
+                  
                   <div class="mt-3">
                     <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">SIGN IN</button>
                   </div>

@@ -3716,7 +3716,7 @@ textarea.form-control-lg {
   appearance: none;
   -webkit-print-color-adjust: exact;
   color-adjust: exact; }
-  .form-check-input[type="checkbox"] {
+  .form-check-input[type="checkbox"], .form-checkbox {
     border-radius: 0.25em; }
   .form-check-input[type="radio"] {
     border-radius: 50%; }
@@ -10981,27 +10981,27 @@ input:focus {
 /* Fonts */
 @font-face {
   font-family: 'ubuntu-light';
-  src: url("../fonts/Ubuntu/Ubuntu-Light.eot");
+  src: url("assets/fonts/Ubuntu/Ubuntu-Light.eot");
   /* IE9 Compat Modes */
-  src: url("../fonts/Ubuntu/Ubuntu-Light.woff2") format("woff2"), url("../fonts/Ubuntu/Ubuntu-Light.woff") format("woff"), url("../fonts/Ubuntu/Ubuntu-Light.ttf") format("truetype"); }
+  src: url("assets/fonts/Ubuntu/Ubuntu-Light.woff2") format("woff2"), url("assets/fonts/Ubuntu/Ubuntu-Light.woff") format("woff"), url("assets/fonts/Ubuntu/Ubuntu-Light.ttf") format("truetype"); }
 
 @font-face {
   font-family: 'ubuntu-regular';
-  src: url("../fonts/Ubuntu/Ubuntu-Regular.eot");
+  src: url("assets/fonts/Ubuntu/Ubuntu-Regular.eot");
   /* IE9 Compat Modes */
-  src: url("../fonts/Ubuntu/Ubuntu-Regular.woff2") format("woff2"), url("../fonts/Ubuntu/Ubuntu-Regular.woff") format("woff"), url("../fonts/Ubuntu/Ubuntu-Regular.ttf") format("truetype"); }
+  src: url("assets/fonts/Ubuntu/Ubuntu-Regular.woff2") format("woff2"), url("assets/fonts/Ubuntu/Ubuntu-Regular.woff") format("woff"), url("assets/fonts/Ubuntu/Ubuntu-Regular.ttf") format("truetype"); }
 
 @font-face {
   font-family: 'ubuntu-medium';
-  src: url("../fonts/Ubuntu/Ubuntu-Medium.eot");
+  src: url("assets/fonts/Ubuntu/Ubuntu-Medium.eot");
   /* IE9 Compat Modes */
-  src: url("../fonts/Ubuntu/Ubuntu-Medium.woff2") format("woff2"), url("../fonts/Ubuntu/Ubuntu-Medium.woff") format("woff"), url("../fonts/Ubuntu/Ubuntu-Medium.ttf") format("truetype"); }
+  src: url("assets/fonts/Ubuntu/Ubuntu-Medium.woff2") format("woff2"), url("assets/fonts/Ubuntu/Ubuntu-Medium.woff") format("woff"), url("assets/fonts/Ubuntu/Ubuntu-Medium.ttf") format("truetype"); }
 
 @font-face {
   font-family: 'ubuntu-bold';
-  src: url("../fonts/Ubuntu/Ubuntu-Bold.eot");
+  src: url("assets/fonts/Ubuntu/Ubuntu-Bold.eot");
   /* IE9 Compat Modes */
-  src: url("../fonts/Ubuntu/Ubuntu-Bold.woff2") format("woff2"), url("../fonts/Ubuntu/Ubuntu-Bold.woff") format("woff"), url("../fonts/Ubuntu/Ubuntu-Bold.ttf") format("truetype"); }
+  src: url("assets/fonts/Ubuntu/Ubuntu-Bold.woff2") format("woff2"), url("assets/fonts/Ubuntu/Ubuntu-Bold.woff") format("woff"), url("assets/fonts/Ubuntu/Ubuntu-Bold.ttf") format("truetype"); }
 
 .text-twitter {
   color: #2caae1; }
@@ -13209,8 +13209,6 @@ select.form-control {
           height: auto;
           border-top: 0; }
           .sidebar .nav.sub-menu .nav-item .nav-link:before {
-            content: "\F054";
-            font-family: "Material Design Icons";
             display: block;
             position: absolute;
             left: 0px;

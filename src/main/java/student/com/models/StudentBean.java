@@ -1,6 +1,7 @@
 package student.com.models;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Set;
 import javax.validation.constraints.NotEmpty;
@@ -27,34 +28,46 @@ import lombok.Setter;
 public class StudentBean implements Serializable{
 	@Id	
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
 	@NotEmpty
+	@Column(name = "studentid")
 	private String studentId;
 	@NotEmpty
+	@Column(name = "joindate")
 	private String joindate;
 	@NotEmpty
+	@Column(name = "name")
 	private String name;
 	@NotEmpty
+	@Column(name = "email")
 	private String email;
 	@NotEmpty
+	@Column(name = "password")
 	private String password;
 	@NotEmpty
+	@Column(name = "dob")
 	private String dob;
 	@NotEmpty
+	@Column(name = "gender")
 	private String gender;
 	@NotEmpty
+	@Column(name = "phone")
 	private String phone;
 	@NotEmpty
+	@Column(name = "education")
 	private String education;
-	@NotEmpty
-	private String courseId;
-
-	@Transient	
-	private MultipartFile photo;
 	
 	@Column(name = "photo")		
+	private byte[] photo;
+	
+		
     private String photoPath;
 	
+    
+
+    @Transient
+    private String coursesAsString;
 
 
 	@ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})

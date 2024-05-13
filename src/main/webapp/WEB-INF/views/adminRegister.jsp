@@ -13,10 +13,7 @@
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <!-- Link to Font Awesome CSS -->
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-	integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="shortcut icon" href="assets/images/favicon.ico" />
@@ -37,7 +34,7 @@
 							<div class="card">
 								<div class="card-body">
 									<h4 class="card-title">Admin Register</h4>
-									<form:form class="form-sample" method="post"
+									<form:form class="form-sample" 
 										modelAttribute="userDto">
 										<div style="color: red">${error}</div>
 										<div class="row">
@@ -46,7 +43,7 @@
 													<label class="col-sm-3 col-form-label">Code</label>
 													<div class="col-sm-9">
 														<form:input type="text" class="form-control"
-															value="${adminCode }" path="code" disabled="disabled" />
+															value="${adminCode }" path="code" readonly="true" />
 													</div>
 												</div>
 											</div>
@@ -74,7 +71,7 @@
 												<div class="form-group row">
 													<label class="col-sm-3 col-form-label">Email</label>
 													<div class="col-sm-9">
-														<form:input type="email" class="form-control" path="email" />
+														<form:input type="email" class="form-control" id="to" path="email" />
 														<form:errors path="email" style="color:red;"></form:errors>
 													</div>
 												</div>
@@ -130,9 +127,9 @@
 											</div>
 										</div>
 										<div class="mt-3">
-											<button 
+											<div 
 												class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn"
-												id="signInButton">SignIn</button>
+												id="signInButton">SignIn</div>
 										</div>
 
 									</form:form>
@@ -163,51 +160,8 @@
 	<!-- Custom js for this page -->
 	<script src="assets/js/file-upload.js"></script>
 	<!-- End custom js for this page -->
-	<script>
-	document.addEventListener("DOMContentLoaded", function() {
-	console.log("hi")
-	const passwordInput = document.getElementById("passwordInput")
-	passwordInput.value = generateRandomPassword(6);
-	let passwordToEmail = passwordInput.value;
-     function generateRandomPassword(length) {
-     const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+";
-     let password = "";
-     for (let i = 0; i < length; i++) {
-         const randomIndex = Math.floor(Math.random() * charset.length);
-         password += charset[randomIndex];
-     }
-     return password;
-     }
-     
-     function sendMail() {
-         console.log("Hi");
-         (function () {
-             emailjs.init("WsE2hFeJ5wtOCXh6w"); // account public key
-         })();
-         let password = passwordToEmail;
-         var params = {
-             sendername: `ACE Inspiration`,
-             to: document.querySelector("#to").value,
-             subject: `Welcome to ACE Inspiration`,
-             replyto: `example@gmail.com`,
-             message: `ACE Inspiration has been added to your account.
-                         Your Password is : ${password}`,
-
-         };
-
-         console.log(params);
-
-         var serviceID = "service_hp6qahr" // email service id
-         var templateID = "template_ey1j7r8" // email template id
-         emailjs.send(serviceID, templateID, params)
-         .then( res => {
-             alert("Email Sent Successfully!")
-         })
-         .catch();
-
-     }
-     document.getElementById("signInButton").addEventListener("click", sendMail);
-	});
- </script>
+	<script src="assets/js/mailService.js"></script>
+	<script src="assets/js/validation.js"></script>  
+	
 </body>
 </html>

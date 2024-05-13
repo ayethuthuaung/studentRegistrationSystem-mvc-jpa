@@ -168,11 +168,21 @@ public class CourseRepository {
 		CourseBean courseBean;
 		try {
 			em = JPAUtil.getEntityManagerFactory().createEntityManager();
-			courseBean = em.createQuery("SELECT c FROM Course c WHERE c.courseId = :courseId", CourseBean.class)
+			courseBean = em.createQuery("SELECT c FROM CourseBean c WHERE c.courseId = :courseId", CourseBean.class)
 					.setParameter("courseId", courseId).getSingleResult();
 		} finally {
 			em.close();
 		}
 		return courseBean;
 	}
+
+
+	public long getCourseCount() {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        try {
+            return em.createQuery("SELECT COUNT(c) FROM CourseBean c", Long.class).getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
 }

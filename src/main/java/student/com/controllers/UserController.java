@@ -1,5 +1,10 @@
 package student.com.controllers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.modelmapper.ModelMapper;
@@ -11,11 +16,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 
 import lombok.AllArgsConstructor;
+import student.com.dto.StudentDto;
 import student.com.dto.UserDto;
 import student.com.models.UserBean;
 import student.com.service.UserService;
@@ -29,14 +38,13 @@ public class UserController {
 	
 	@Autowired
 	UserService  userService;
+	
 	@Autowired
 	private final Helper helper;
 	
 	
-	@GetMapping({"/", "/dashboard"})
-	public String home() {
-		return "dashboard";
-	}
+	
+
 	
 	@GetMapping("/login")
 	public ModelAndView loginPage(Model model) {
@@ -44,53 +52,79 @@ public class UserController {
 		return new ModelAndView("login","userDto",new UserDto());
 	}
 	
+	@GetMapping("/forgotPassword")
+	public ModelAndView forgotPasswordPage(Model model) {
+		
+		return new ModelAndView("forgotPassword","userDto",new UserDto());
+	}
+	@PostMapping("/forgotPassword")
+	public String checkEmailExistForForgotPassword(@ModelAttribute("userDto") UserDto userDto, Model model) {
+		if(userService.isEmailExists(userDto.getEmail())) {
+			model.addAttribute("correctEmail", Helper.generateOTP());
+			return "forgotPassword";
+		}
+		model.addAttribute("emailError", "Please enter the correct email.");
+		return "forgotPassword";
+	}
+	
 	@PostMapping("/login")
     public String login(@ModelAttribute("userDto") UserDto userDto, HttpSession session, ModelMap model) {
-    	
-    	if (userDto.getEmail() == null || userDto.getEmail().isEmpty() || userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
+		System.out.println("hi");
+    	if (userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
             
-            model.addAttribute("error", "Email and password are required!!!");
-            model.addAttribute("errorMessageColor", "red");
-            
+            model.addAttribute("loginError", "Email is required.");            
             return "login"; 
         }
+    	if(userDto.getPassword() == null || userDto.getPassword().isEmpty()) {
+    		model.addAttribute("loginError", "Password is required.");            
+            return "login"; 
+    	}
     	
        
         UserDto loggedInUser = userService.getUserByEmail(userDto.getEmail());
-
+        System.out.println("hi");
+       
         if (loggedInUser != null && loggedInUser.getPassword().equals(userDto.getPassword())) {
-            session.setAttribute("loggedInUser", loggedInUser);
-            if (loggedInUser.getRole().equalsIgnoreCase("admin")) {               
+        	 if (loggedInUser.isDeleted()) {
+                 
+                 model.addAttribute("loginError", "This account is disabled.");
+                 return "login";
+                 
+             } 
+        	session.setAttribute("loggedInUser", loggedInUser);
+            if (!loggedInUser.getRole().equalsIgnoreCase("user")) {
+            	System.out.println("hi");
                 return "redirect:/dashboard";
             } else if (loggedInUser.getRole().equalsIgnoreCase("user")) {               
                 return "redirect:/home";             
             }
                
-//                if (loggedInUser.isIs_disabled()) {
-//                   
-//                    model.addAttribute("error", "This account is disabled.");
-//                    return "login";
-//                    
-//                } else {
-//                    return "/user";
-//                }
+              
             
         } else {
             // Authentication failed
             if (loggedInUser == null) {
-                model.addAttribute("error", "Invalid email.");
-            } else {
-                model.addAttribute("error", "Invalid password.");
-            }
+            	System.out.println("Hi");
+                model.addAttribute("loginError", "Invalid email or password.");
+            } 
+            System.out.println("wrong");
+            model.addAttribute("loginError", "Invalid email or password.");
             return "login"; 
-        }
-       
-        model.addAttribute("error", "Invalid email or password.");
+        }       
+        System.out.println("wrong");
+        model.addAttribute("loginError", "Invalid email or password.");
         return "login";
-    }
+    }	
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/home";
+	}
 	
 	@GetMapping("/addAdmin")
 	public ModelAndView userCreate(Model model) {
+		System.out.println("Hi Admin");
 		model.addAttribute("adminCode", helper.getAdminCode());
 		return new ModelAndView("adminRegister","userDto",new UserDto());
 	}
@@ -114,7 +148,63 @@ public class UserController {
 				return "adminRegister";
 			}
 		}
-		return "adminRegister";
+		return "redirect:/viewAdmin";
 	}
+	//displayUser
+		@GetMapping("/viewAdmin")
+		  public String displayAllUser(ModelMap model) {
+			System.out.println("ViewAdmin");
+		    List<UserDto> list = userService.getAllUser();
+		    if (list.size() == 0) {
+		      model.addAttribute("msg", "  Data not Found");
+		    } else {
+		      model.addAttribute("userList", list);
+
+		    }
+		    return "viewUser";
+
+		  }
+
+		//updateUser
+		  @RequestMapping(value = "/updateUser/{id}", method = RequestMethod.GET)
+		  public ModelAndView updateUser(@PathVariable int id) {
+
+		    UserDto userDto = userService.getUserById(id);
+		    ModelAndView model = new ModelAndView("updateUser");
+		    model.addObject("userDto", userDto);
+		    return model;
+		  }
+
+		  //updateUser
+		  @RequestMapping(value = "/updateUser/{id}", method = RequestMethod.POST)
+		  public String updateUser(@ModelAttribute("userDto") @Validated UserDto userDto, BindingResult bs, ModelMap model, HttpServletRequest request) {
+		      if (bs.hasErrors()) {
+		          return "updateUser";
+		      }
+		      try {
+		          // Retrieve user ID from the request
+		          int id = Integer.parseInt(request.getParameter("id"));
+		          userDto.setId(id); // Set the ID in the UserBean object
+		          int i = userService.update(userDto);
+		          if (i == 0) { 
+		              model.addAttribute("error", "Update failed. User not found or an error occurred.");
+		              return "updateUser";
+		          }
+		      } catch (Exception e) {
+		          model.addAttribute("error", "An unexpected error occurred. Please try again later.");
+		          return "updateUser";
+		      }
+		      return "redirect:/viewAdmin";
+		  }
+		  
+		  //deleteUser
+		  @GetMapping("/deleteUser/{id}")
+		    public String deleteUser(@PathVariable int id, ModelMap model) {
+		      int i = userService.softDeleteData(id);
+		      if (i == 0) {
+		            model.addAttribute("error", "Delete Fail!!");
+		        }
+		        return "redirect:/viewAdmin";
+		    }  
 
 }

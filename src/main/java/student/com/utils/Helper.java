@@ -1,5 +1,7 @@
 package student.com.utils;
 
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,4 +62,20 @@ public class Helper {
 //		studentCode = String.format("STU%03d", numericPart);
 //		return studentCode;
 //	}
+	
+public static String generatedOTP = null;
+		
+	
+	public static String generateOTP() {
+		int length = 6;
+		String charset = "0123456789";
+		StringBuilder otp = new StringBuilder();
+		Random random = new Random();
+		for (int i = 0; i < length; i++) {
+			int index = random.nextInt(charset.length());
+			otp.append(charset.charAt(index));
+		}
+		generatedOTP = otp.toString(); 
+		return generatedOTP;
+	}
 }

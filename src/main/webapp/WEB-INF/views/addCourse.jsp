@@ -37,23 +37,23 @@
                   <div class="card-body">
                     <h4 class="card-title">Course Registration</h4>
                     
-                    <form:form class="forms-sample" method="post" modelAttribute="courseDto">
+                    <form:form class="forms-sample addCourseForm" method="post" modelAttribute="courseDto">
                         
                       <div class="form-group row">
                         <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Code</label>
                         <div class="col-sm-9">
-                          <form:input class="form-control" id="exampleInputUsername2" path="courseId" value="<%=formattedCourseId  %>" readonly="true"/>
+                          <form:input class="form-control" id="exampleInputCode2" path="courseId" value="<%=formattedCourseId  %>" readonly="true"/>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="exampleInputCoursename2" class="col-sm-3 col-form-label">Name</label>
                         <div class="col-sm-9">
-                          <form:input type="text" class="form-control" id="exampleInputUsername2" path="name" />
-                          <form:errors path="name" cssClass="error" />
+                          <form:input type="text" class="form-control" id="courseNameInput" path="name" />
+                          <span id="courseNameError" style="color: red;"></span>
                         </div>
                       </div>
                      
-                      <button type="submit" class="btn btn-primary me-2">Submit</button>
+                      <button type="submit" class="btn btn-primary me-2" id="courseSubmitButton" disabled="disabled">Submit</button>
                     </form:form>
                   </div>
                 </div>
@@ -82,5 +82,6 @@
     <!-- Custom js for this page -->
     <script src="assets/js/file-upload.js"></script>
     <!-- End custom js for this page -->
+    <script src="assets/js/validation.js"></script>  
 </body>
 </html>

@@ -54,6 +54,10 @@ public class CourseService {
 		return courseRepo.updateCourse(courseBean);
 	}
 
+	public long getCourseCount() {
+		return courseRepo.getCourseCount();
+	}
+
 
 }
 

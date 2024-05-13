@@ -18,6 +18,7 @@
 	integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="assets/vendors/css/vendor.bundle.base.css">
+<link rel="stylesheet" href="assets/vendors/mdi/css/materialdesignicons.min.css">
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="shortcut icon" href="assets/images/favicon.ico" />
 </head>
@@ -43,10 +44,10 @@
                 <div class="card bg-gradient-danger card-img-holder text-white">
                   <div class="card-body">
                     
-                    <h4 class="font-weight-normal mb-3">Students <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+                    <h4 class="font-weight-normal mb-3"><i class="fa-solid fa-user-group float-right"></i> Students
                     </h4>
-                    <h2 class="mb-5">$ 15,0000</h2>
-                    <h6 class="card-text">Increased by 60%</h6>
+                    <h2 class="mb-5">${counts.studentCount }</h2>
+                   
                   </div>
                 </div>
               </div>
@@ -54,10 +55,10 @@
                 <div class="card bg-gradient-info card-img-holder text-white">
                   <div class="card-body">
                     
-                    <h4 class="font-weight-normal mb-3">Courses <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+                    <h4 class="font-weight-normal mb-3"><i class="fa-solid fa-folder float-right"></i> Courses
                     </h4>
-                    <h2 class="mb-5">45,6334</h2>
-                    <h6 class="card-text">Decreased by 10%</h6>
+                    <h2 class="mb-5">${counts.courseCount }</h2>
+                    
                   </div>
                 </div>
               </div>
@@ -65,10 +66,10 @@
                 <div class="card bg-gradient-success card-img-holder text-white">
                   <div class="card-body">
                    
-                    <h4 class="font-weight-normal mb-3">Users<i class="mdi mdi-diamond mdi-24px float-right"></i>
+                    <h4 class="font-weight-normal mb-3"><i class="fa-solid fa-users float-right"></i> Users
                     </h4>
-                    <h2 class="mb-5">95,5741</h2>
-                    <h6 class="card-text">Increased by 5%</h6>
+                    <h2 class="mb-5">${counts.userCount} </h2>
+                   
                   </div>
                 </div>
               </div>

@@ -105,6 +105,15 @@ public class CourseController {
 		return "redirect:/viewCourse";
 
 	}
+	
+	@RequestMapping(value = "/courseDetail", method = RequestMethod.GET)
+	public ModelAndView courseDetail() {
+
+		
+		ModelAndView m = new ModelAndView("courseDetail");
+		
+		return m;
+	}
 
 
 

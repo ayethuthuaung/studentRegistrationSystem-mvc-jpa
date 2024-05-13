@@ -56,9 +56,9 @@
                           <td>${displayedIndex}</td>
                           <td>${course.courseId}</td>
                           <td>${course.name}</td>
-                          <td><button type="button" class="btn btn-info  " onclick="location.href = '/studentRegistrationSystem-mvc-jpa/updateCourse/${course.id}';">
-	                        Update
-	                    </button></td>
+                          <td><i class="fa-solid fa-pen-to-square text-primary" onclick="location.href = '/studentRegistrationSystem-mvc-jpa/updateCourse/${course.id}';">
+	                        <i class="fa-solid fa-trash text-danger" style="margin-left: 20px;" onclick="deleteCourse(${courseId})"></i>
+	                    </i></td>
                           <c:set var="displayedIndex" value="${displayedIndex + 1}" />
                         </tr>
                         

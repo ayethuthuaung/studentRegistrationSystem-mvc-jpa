@@ -51,5 +51,7 @@ public class UserBean {
 	 
 	 private String password;
 	
+	 //forsoftdelete
+	 private boolean deleted;
 
 }
