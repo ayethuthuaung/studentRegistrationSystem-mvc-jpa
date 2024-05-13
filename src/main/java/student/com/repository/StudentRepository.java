@@ -48,7 +48,7 @@ public class StudentRepository {
 	    	  transaction.begin();
 	    	  
 	    	  Query query = em.createQuery(
-	    			  "UPDATE StudentBean s SET s.studentId = :studentId,s.name = :name,s.dob = :dob,s.gender = :gender, s.phone = :phone,s.education = :education,s.courseId = :courseId,s.photoPath = :photoPath WHERE s.id = :id");
+	    			  "UPDATE StudentBean s SET s.studentId = :studentId,s.name = :name,s.dob = :dob,s.gender = :gender, s.phone = :phone,s.education = :education,s.courseId = :courseId,s.photo = :photo WHERE s.id = :id");
 	    	  
 	    	  
 	    	  query.setParameter("studentId", studentBean.getStudentId());
@@ -57,7 +57,7 @@ public class StudentRepository {
 	    	  query.setParameter("gender", studentBean.getGender());
 	    	  query.setParameter("phone", studentBean.getPhone());
 	    	  query.setParameter("education", studentBean.getEducation());
-	    	  query.setParameter("photoPath", studentBean.getPhotoPath());
+	    	  query.setParameter("photo", studentBean.getPhoto());
 	    	  query.setParameter("id", studentBean.getId());
 	    	  i = query.executeUpdate();
 	    	  

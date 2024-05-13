@@ -134,6 +134,7 @@
 													<label class="col-sm-3 col-form-label">Photo</label>
 													<div class="col-sm-9">
 														<form:input type="file" class="form-control" path="photoImageInput" id="studentPhotoImageInput" />
+														<img style="width: 150px; height: 150px;" class="image" src="data:image/jpeg;base64, ${studentDto.photoPath}" alt="Student Photo">
 														<span id="studentPhotoError" style="color: red;"></span>
 													</div>
 												</div>
@@ -183,7 +184,7 @@
 												class="btn btn-block btn-secondary btn-lg font-weight-medium auth-form-btn"
 												id="signInButton">Reset</button>
 										</div>
-
+										<form:input path="id" type="hidden" value="${studentDto.id }"/>
 									</form:form>
 								</div>
 							</div>
