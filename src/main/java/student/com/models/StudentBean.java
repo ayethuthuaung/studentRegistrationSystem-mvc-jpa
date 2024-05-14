@@ -63,8 +63,8 @@ public class StudentBean implements Serializable{
 	
 		
     private String photoPath;
-	
-    
+    @Column(name = "is_deleted")
+    private boolean deleted;
 
     @Transient
     private String coursesAsString;

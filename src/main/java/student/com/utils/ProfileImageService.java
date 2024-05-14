@@ -53,5 +53,14 @@ public class ProfileImageService {
             }
         }
     }
-	
+	public static byte[] convertStringToByteArray(String base64Image) {
+        try {
+            // Decode Base64 string to byte array
+            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
+            return imageBytes;
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return null; // Return null in case of error
+        }
+    }
 }

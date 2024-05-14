@@ -40,7 +40,7 @@
 							<div class="card">
 								<div class="card-body">
 									<h4 class="card-title">Update Student Register Form</h4>
-									<form:form  class="form-sample" method="post" action="../updateStudentProcess" enctype="multipart/form-data"
+									<form:form  class="form-sample" method="post" action="../../studentRegistrationSystem-mvc-jpa/updateStudentProcess" enctype="multipart/form-data"
 										modelAttribute="studentDto">
 										<div style="color: red">${error}</div>
 										<div class="row">
@@ -133,7 +133,7 @@
 												<div class="form-group row">
 													<label class="col-sm-3 col-form-label">Photo</label>
 													<div class="col-sm-9">
-														<form:input type="file" class="form-control" path="photoImageInput" id="studentPhotoImageInput" />
+														<form:input type="file" class="form-control" path="photoImageInput" id="studentPhotoImageInput" value="${studentDto.photoImageInput }" />
 														<img style="width: 150px; height: 150px;" class="image" src="data:image/jpeg;base64, ${studentDto.photoPath}" alt="Student Photo">
 														<span id="studentPhotoError" style="color: red;"></span>
 													</div>

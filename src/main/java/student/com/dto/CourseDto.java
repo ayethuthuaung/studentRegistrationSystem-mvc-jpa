@@ -9,9 +9,13 @@ import lombok.Setter;
 @Setter
 public class CourseDto {
 	private int id;
+	  private String courseId;
 	
-	
-	private String courseId;
-	@NotEmpty
-	private String name;
+	  private String name;
+	 
+	  private String month;
+	  private double price;
+	  
+	  private String period;
+	  private boolean is_deleted;
 }

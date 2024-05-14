@@ -53,6 +53,10 @@ public class CourseService {
 		CourseBean courseBean = modelMapper.map(courseDto, CourseBean.class);
 		return courseRepo.updateCourse(courseBean);
 	}
+	
+	public int deleteCourse(int id) {
+	    return courseRepo.deleteCourse(id);
+	  }
 
 	public long getCourseCount() {
 		return courseRepo.getCourseCount();

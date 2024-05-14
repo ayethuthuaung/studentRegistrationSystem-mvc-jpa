@@ -54,6 +54,7 @@ import student.com.models.CourseBean;
 import student.com.models.StudentBean;
 import student.com.service.CourseService;
 import student.com.service.StudentService;
+import student.com.utils.ProfileImageService;
 import student.com.repository.StudentRepository;
 @Component
 @ComponentScan("student.com.service")
@@ -101,6 +102,7 @@ public class StudentController {
        byte[] photoBytes = studentDto.getPhotoImageInput().getBytes();  
        System.out.println(photoBytes);
        studentDto.setPhoto(photoBytes);
+       studentDto.setPhotoPath(file.getOriginalFilename());
      }else {
        m.addAttribute("courseList", courseList);
        m.addAttribute("error","Photo Required");
@@ -156,26 +158,39 @@ public class StudentController {
 }
   
   
-  @DeleteMapping("status/{id}")
+  @GetMapping("status/{id}")
     public ResponseEntity<String> deleteStudent(@PathVariable int id) {
+		System.out.println("Hi"+id);
         boolean success = studentService.updateStatus(id, 1); // Set delete status to 1
         if (success) {
+        
             return ResponseEntity.ok("Student deleted successfully");
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete student");
         }
     } 
+  
+  @RequestMapping(value = "/deleteStudent/{id}",  method = RequestMethod.GET)
+  public String deleteStudent(@PathVariable int id, ModelMap model) {
+	  boolean success = studentService.updateStatus(id, 1); // Set delete status to 1
+    
+    if (!success) {
+      model.addAttribute("error", "Delete Fail!!");
+    }
+    return "redirect:/viewStudent";
+  }
     
   
   @RequestMapping(value="/updateStudent/{id}",method=RequestMethod.GET)
   public ModelAndView updateStudent(@PathVariable int id, ModelMap m, HttpSession session) {
-
+	  
       // Get the student details by ID
       StudentDto studentDto = studentService.getStudentById(id);
 
       List<CourseDto> allCourses = courseService.getAllCourse();
       
       List<CourseDto> courseList = new ArrayList<>();
+      
       ModelMapper modelMapper = new ModelMapper();
       Set<CourseBean> coursesOfStudent = studentDto.getCourses();
       Set<CourseDto> coursesDTOOfStudent = new HashSet<>();
@@ -208,13 +223,44 @@ public class StudentController {
 	
   
   @RequestMapping(value="/updateStudentProcess", method=RequestMethod.POST)
-	public String updateStudentProcess(@ModelAttribute("studentDto") @Validated StudentDto studentDto,BindingResult bs,@RequestParam("photoImageInput") MultipartFile file,ModelMap m,HttpSession session) {
+	public String updateStudentProcess(@ModelAttribute("studentDto") @Validated StudentDto studentDto,BindingResult bs, @RequestParam("courseId") String[] courseId,@RequestParam("photoImageInput") MultipartFile file,ModelMap m,HttpSession session) throws IOException {
 	  
+	  Set<CourseBean> courses  = studentService.addCourseForStudent(courseId);
+      if(courses != null) {
+      studentDto.setCourses(courses);
+      }
 		System.out.println("Hiupdate" + studentDto.toString());
-		List<CourseDto> courseLists = courseService.getAllCourse();
 		
+		List<CourseDto> courseLists = courseService.getAllCourse();
+		 List<CourseDto> courseList = new ArrayList<>();
+		 StudentDto studentDtoRet = studentService.getStudentById(studentDto.getId());
+	      ModelMapper modelMapper = new ModelMapper();
+	      Set<CourseBean> coursesOfStudent = studentDtoRet.getCourses();
+	      Set<CourseDto> coursesDTOOfStudent = new HashSet<>();
+
+	      for (CourseBean course : coursesOfStudent) {
+	          CourseDto courseDto = modelMapper.map(course, CourseDto.class);
+	          coursesDTOOfStudent.add(courseDto);
+	      }
+
+	      
+	      for (CourseDto course : courseLists) {
+	          boolean isAttended = false;
+	          for (CourseDto attendedCourse : coursesDTOOfStudent) { 
+	              if (course.getCourseId().equals(attendedCourse.getCourseId())) {
+	                  isAttended = true;
+	                  break;
+	              }
+	          }
+	          if (!isAttended) {
+	              courseList.add(course);
+	          }
+	      }
+
+
 		if(bs.hasErrors()) {
-			m.addAttribute("courseLists",courseLists);
+			m.addAttribute("courseLists",courseList);
+			m.addAttribute("studentDto",studentDtoRet);
 			m.addAttribute("error","Invalid Student required");
 			return "updateStudent";
 		}	
@@ -230,9 +276,8 @@ public class StudentController {
 			       System.out.println(photoBytes);
 			       studentDto.setPhoto(photoBytes);
 			 }else {
-				 m.addAttribute("courseList",courseLists);
-				 m.addAttribute("error","Photo Required");
-				 return "updateStudent";
+				 System.out.println("Hi Image");
+				 studentDto.setPhoto(ProfileImageService.convertStringToByteArray(studentDtoRet.getPhotoPath()));
 			 }
 		 } catch (IOException e) {
 		        System.out.print(e);
@@ -242,9 +287,9 @@ public class StudentController {
 	    int rs = studentService.updateStudent(studentDto);
 	    
 	    if (rs == 0) {
-	    	StudentDto studentDtoRet = studentService.getStudentById(studentDto.getId());
+	    	//StudentDto studentDtoRet = studentService.getStudentById(studentDto.getId());
 	    	m.addAttribute("studentDto",studentDtoRet);
-	    	m.addAttribute("courseList",courseLists);	
+	    	m.addAttribute("courseList",courseList);	
 	        m.addAttribute("error", "Update Failed");
 	        return "updateStudent";
 	    }

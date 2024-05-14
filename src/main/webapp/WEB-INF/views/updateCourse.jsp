@@ -46,11 +46,36 @@
                           <form:input class="form-control" id="exampleInputUsername2" path="courseId" value="${courseDto.courseId}" readonly="true"/>
                         </div>
                       </div>
+                      
                       <div class="form-group row">
                         <label for="exampleInputCoursename2" class="col-sm-3 col-form-label" >Name</label>
                         <div class="col-sm-9">
                           <form:input type="text" class="form-control" id="exampleInputUsername2" path="name" value="${courseDto.name}"/>
                           <form:errors path="name" cssClass="error" />
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <label for="exampleInputCoursename2" class="col-sm-3 col-form-label" >Price</label>
+                        <div class="col-sm-9">
+                          <form:input type="text" class="form-control" id="exampleInputUsername2" path="price" value="${courseDto.price}"/>
+                          <form:errors path="price" cssClass="error" />
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <label for="exampleInputCoursename2" class="col-sm-3 col-form-label" >Month</label>
+                        <div class="col-sm-9">
+                          <form:input type="text" class="form-control" id="exampleInputUsername2" path="month" value="${courseDto.month}"/>
+                          <form:errors path="month" cssClass="error" />
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <label for="exampleInputCoursename2" class="col-sm-3 col-form-label" >Period</label>
+                        <div class="col-sm-9">
+                          <form:input type="text" class="form-control" id="exampleInputUsername2" path="period" value="${courseDto.period}"/>
+                          <form:errors path="period" cssClass="error" />
                         </div>
                       </div>
                      

@@ -1,5 +1,6 @@
 package student.com.service;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -73,7 +74,7 @@ public class StudentService {
 	}
 	
 	public boolean updateStatus(int id, int deleteStatus) {
-        return studentRepo.updateStatus(id, deleteStatus);
+        return studentRepo.updateStatus(id, true);
     }
 
 	public long getStudentCount() {
@@ -89,9 +90,53 @@ public class StudentService {
 		return studentDto;
 	}
 
-	public int updateStudent(StudentDto studentDto) {
-		ModelMapper modelMapper = new ModelMapper();
-		return studentRepo.updateStudent(modelMapper.map(studentDto, StudentBean.class));
+//	public int updateStudent(StudentDto studentDto) throws IOException {
+//		ModelMapper modelMapper = new ModelMapper();
+//		byte[] photoBytes = studentDto.getPhotoImageInput().getBytes();  
+//	       System.out.println(photoBytes);
+//	       studentDto.setPhoto(photoBytes);
+//		StudentBean studentBean = modelMapper.map(studentDto, StudentBean.class);
+//		for(CourseBean courseBean : studentBean.getCourses()) {
+//			System.out.println(courseBean.toString());
+//		}
+//		return studentRepo.updateStudent(studentBean);
+//	}
+	
+	public int updateStudent(StudentDto studentDto) throws IOException {
+	    ModelMapper modelMapper = new ModelMapper();
+	    byte[] photoBytes = studentDto.getPhotoImageInput().getBytes();  
+	    System.out.println(photoBytes);
+	    studentDto.setPhoto(photoBytes);
+	    StudentBean studentBean = modelMapper.map(studentDto, StudentBean.class);
+	    // Retrieve managed student entity
+	    StudentBean managedStudent = studentRepo.selectOneStudent(studentBean.getId());
+	    if (managedStudent == null) {
+	        // Handle error, student not found
+	        return 0;
+	    }
+	    // Update student properties
+	    managedStudent.setStudentId(studentBean.getStudentId());
+	    managedStudent.setName(studentBean.getName());
+	    managedStudent.setDob(studentBean.getDob());
+	    managedStudent.setGender(studentBean.getGender());
+	    managedStudent.setPhone(studentBean.getPhone());
+	    managedStudent.setEducation(studentBean.getEducation());
+	    managedStudent.setPhoto(studentBean.getPhoto());
+
+	    // Clear existing courses associated with the student
+	    managedStudent.getCourses().clear();
+	    
+	    // Update courses for the student
+	    for (CourseBean courseBean : studentBean.getCourses()) {
+	        CourseBean managedCourse = courseRepo.selectOneCourse(courseBean.getId());
+	        if (managedCourse != null) {
+	            managedStudent.getCourses().add(managedCourse);
+	        }
+	    }
+
+	    // Save the updated student entity
+	    return studentRepo.save(managedStudent) ;
 	}
+
 	
 }

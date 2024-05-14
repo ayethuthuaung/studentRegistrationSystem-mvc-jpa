@@ -65,8 +65,10 @@
                           <td>${user.address}</td>
                 <td>
                 <div>
+<c:if test="${!user.role eq 'master'}">
+    <i class="fa-solid fa-pen-to-square text-primary" onclick="location.href = 'updateUser/${user.id }';"></i>
+</c:if>
    
-   <i class="fa-solid fa-pen-to-square text-primary"  onclick="location.href = 'updateUser/${user.id }';"></i>
 	               		<c:if test="${loggedInUser.role eq 'master'}">
     <i class="fa-solid fa-trash text-danger" style="margin-left: 20px;" onclick="confirmDelete(${user.id})"></i>
 </c:if>

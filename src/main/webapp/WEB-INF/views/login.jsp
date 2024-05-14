@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
   <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+  <%@ page import="util.common"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -45,12 +46,12 @@
                   <div class="my-2 d-flex justify-content-between align-items-center">
                     <div class="form-check">   
                     </div>
-                    <a href="#" class="auth-link text-primary">Forgot password?</a>
+                    <a href="email" class="auth-link text-primary">Forgot password?</a>
                   </div>
                   <h6 class="font-weight-light" style="color: red;">${loginError }</h6>
                   
                   <div class="mt-3">
-                    <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">SIGN IN</button>
+                    <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" >SIGN IN</button>
                   </div>
                   
               

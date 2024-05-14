@@ -13,22 +13,22 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="homeAssets/img/favicon.png" rel="icon">
-  <link href="homeAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="<%=common.url%>homeAssets/img/favicon.png" rel="icon">
+  <link href="<%=common.url%>homeAssets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="homeAssets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="homeAssets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="homeAssets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="homeAssets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="homeAssets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="homeAssets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="<%=common.url%>homeAssets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="<%=common.url%>homeAssets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="<%=common.url%>homeAssets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="<%=common.url%>homeAssets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="<%=common.url%>homeAssets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="<%=common.url%>homeAssets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="homeAssets/css/style.css" rel="stylesheet">
+  <link href="<%=common.url%>homeAssets/css/style.css" rel="stylesheet">
 
  
 </head>
@@ -47,15 +47,15 @@
               <div class="swiper-wrapper align-items-center">
 
                 <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-1.jpg" alt="">
+                  <img src="<%=common.url%>assets/images/portfolio-details-1.jpg" alt="">
                 </div>
 
                 <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-2.jpg" alt="">
+                  <img src="<%=common.url%>assets/images/portfolio-details-2.jpg" alt="">
                 </div>
 
                 <div class="swiper-slide">
-                  <img src="assets/img/portfolio/portfolio-details-3.jpg" alt="">
+                  <img src="<%=common.url%>assets/images/portfolio-details-3.jpg" alt="">
                 </div>
 
               </div>
@@ -65,12 +65,14 @@
 
           <div class="col-lg-4">
             <div class="portfolio-info">
-              <h3>Project information</h3>
+              <h3>Course information</h3>
               <ul>
-                <li><strong>Category</strong>: Web design</li>
-                <li><strong>Client</strong>: ASU Company</li>
-                <li><strong>Project date</strong>: 01 March, 2020</li>
-                <li><strong>Project URL</strong>: <a href="#">www.example.com</a></li>
+                <li><strong>Name</strong>: ${course.name }</li>
+                <li><strong>Code</strong>: ${course.courseId }</li>
+                <li><strong>Duration</strong>: ${course.month } Months</li>
+                <li><strong>Period</strong>: ${course.period }</li>
+                <li><strong>Price</strong>: ${course.price }</li>
+                
               </ul>
             </div>
             
@@ -86,17 +88,17 @@
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="homeAssets/vendor/purecounter/purecounter_vanilla.js"></script>
-  <script src="homeAssets/vendor/aos/aos.js"></script>
-  <script src="homeAssets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="homeAssets/vendor/glightbox/js/glightbox.min.js"></script>
-  <script src="homeAssets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
-  <script src="homeAssets/vendor/swiper/swiper-bundle.min.js"></script>
-  <script src="homeAssets/vendor/waypoints/noframework.waypoints.js"></script>
-  <script src="homeAssets/vendor/php-email-form/validate.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/aos/aos.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="<%=common.url%>homeAssets/vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="homeAssets/js/main.js"></script>
+  <script src="<%=common.url%>homeAssets/js/main.js"></script>
 	
 
 </body>

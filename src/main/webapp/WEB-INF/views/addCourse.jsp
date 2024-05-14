@@ -45,6 +45,7 @@
                           <form:input class="form-control" id="exampleInputCode2" path="courseId" value="<%=formattedCourseId  %>" readonly="true"/>
                         </div>
                       </div>
+                      
                       <div class="form-group row">
                         <label for="exampleInputCoursename2" class="col-sm-3 col-form-label">Name</label>
                         <div class="col-sm-9">
@@ -52,8 +53,32 @@
                           <span id="courseNameError" style="color: red;"></span>
                         </div>
                       </div>
+                      
+                      <div class="form-group row">
+                        <label for="exampleInputCoursename2" class="col-sm-3 col-form-label">Price</label>
+                        <div class="col-sm-9">
+                          <form:input type="number" class="form-control" id="coursePriceInput" path="price" />
+                          <span id="courseNameError" style="color: red;"></span>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <label for="exampleInputCoursename2" class="col-sm-3 col-form-label">Month</label>
+                        <div class="col-sm-9">
+                          <form:input type="number" class="form-control" id="courseMonthInput" path="month" />
+                          <span id="courseNameError" style="color: red;"></span>
+                        </div>
+                      </div>
+                      
+                      <div class="form-group row">
+                        <label for="exampleInputCoursename2" class="col-sm-3 col-form-label">Period</label>
+                        <div class="col-sm-9">
+                          <form:input type="text" class="form-control" id="coursePeriodInput" path="period" />
+                          <span id="courseNameError" style="color: red;"></span>
+                        </div>
+                      </div>
                      
-                      <button type="submit" class="btn btn-primary me-2" id="courseSubmitButton" disabled="disabled">Submit</button>
+                      <button type="submit" class="btn btn-primary me-2" id="courseSubmitButton">Submit</button>
                     </form:form>
                   </div>
                 </div>
@@ -83,5 +108,6 @@
     <script src="assets/js/file-upload.js"></script>
     <!-- End custom js for this page -->
     <script src="assets/js/validation.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.11.0/sweetalert2.all.min.js"></script>
 </body>
 </html>

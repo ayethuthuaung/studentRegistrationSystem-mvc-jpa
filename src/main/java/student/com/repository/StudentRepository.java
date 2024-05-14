@@ -11,6 +11,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import student.com.models.CourseBean;
 import student.com.models.StudentBean;
 import student.com.service.JPAUtil;
 
@@ -39,41 +40,58 @@ public class StudentRepository {
     }
 
 	public int updateStudent(StudentBean studentBean) {
-		 EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
-	      EntityTransaction transaction = em.getTransaction();
-	      
-	      int i = 0;
-	      
-	      try {
-	    	  transaction.begin();
-	    	  
-	    	  Query query = em.createQuery(
-	    			  "UPDATE StudentBean s SET s.studentId = :studentId,s.name = :name,s.dob = :dob,s.gender = :gender, s.phone = :phone,s.education = :education,s.courseId = :courseId,s.photo = :photo WHERE s.id = :id");
-	    	  
-	    	  
-	    	  query.setParameter("studentId", studentBean.getStudentId());
-	    	  query.setParameter("name", studentBean.getName());
-	    	  query.setParameter("dob", studentBean.getDob());
-	    	  query.setParameter("gender", studentBean.getGender());
-	    	  query.setParameter("phone", studentBean.getPhone());
-	    	  query.setParameter("education", studentBean.getEducation());
-	    	  query.setParameter("photo", studentBean.getPhoto());
-	    	  query.setParameter("id", studentBean.getId());
-	    	  i = query.executeUpdate();
-	    	  
-	    	  transaction.commit();
-	    	  
-	      }catch(Exception e) {
-	    	  if (transaction.isActive()) {
-	              transaction.rollback(); 
-	          }
+	    EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+	    EntityTransaction transaction = em.getTransaction();
+	    int i = 0;
+	    System.out.println("HiTransation");
+	    try {
+	        transaction.begin();
+	        Query query = em.createQuery(
+	                "UPDATE StudentBean s SET s.studentId = :studentId, s.name = :name, s.dob = :dob, s.gender = :gender, " +
+	                        "s.phone = :phone, s.education = :education, s.photo = :photo WHERE s.id = :id");
+
+	        query.setParameter("studentId", studentBean.getStudentId());
+	        query.setParameter("name", studentBean.getName());
+	        query.setParameter("dob", studentBean.getDob());
+	        query.setParameter("gender", studentBean.getGender());
+	        query.setParameter("phone", studentBean.getPhone());
+	        query.setParameter("education", studentBean.getEducation());
+	        query.setParameter("photo", studentBean.getPhoto());
+	        query.setParameter("id", studentBean.getId());
 	       
-	      } finally {
-	          em.close(); 
-	      }
-	      
-	      return i;
-	  }
+
+//	        // Clear existing courses associated with the student
+//	        StudentBean managedStudent = em.find(StudentBean.class, studentBean.getId());
+//	        managedStudent.getCourses().clear();
+//	        
+//	        // Update courses for the student
+//	        for (CourseBean course : studentBean.getCourses()) {
+//	            CourseBean managedCourse = em.find(CourseBean.class, course.getId());
+//	            managedStudent.getCourses().add(managedCourse);
+//	        }
+//	        Query clearQuery = em.createQuery("DELETE FROM stud_course sc WHERE sc.studentId = :studentId");
+//	        clearQuery.setParameter("studentId", studentBean.getId());
+//	        clearQuery.executeUpdate();
+//
+//	        // Update the association table with the new courses for the student
+//	        for (CourseBean course : managedStudent.getCourses()) {
+//	            em.persist(new StudCourse(studentBean.getId(), course.getId()));
+//	        }
+	        i = query.executeUpdate();
+	        transaction.commit();
+	    } catch (Exception e) {
+	    	System.out.println("HiStudent");
+	        if (transaction.isActive()) {
+	            transaction.rollback();
+	        }
+	        e.printStackTrace(); // handle exception properly in your application
+	    } finally {
+	        em.close();
+	    }
+
+	    return i;
+	}
+
 
 	
 	public int deleteStudent(int id) {
@@ -162,7 +180,7 @@ public class StudentRepository {
 		try {
 			em = JPAUtil.getEntityManagerFactory().createEntityManager();
 			
-			studentList = em.createQuery("SELECT s FROM StudentBean s",StudentBean.class).getResultList();
+			studentList = em.createQuery("SELECT s FROM StudentBean s WHERE s.deleted = 0",StudentBean.class).getResultList();
 		}finally {
 			if(em != null) {
 				em.close();
@@ -198,7 +216,7 @@ public class StudentRepository {
 	    return studentList;
 	}
 	
-	public boolean updateStatus(int id, int delete) {
+	public boolean updateStatus(int id, boolean delete) {
 	    EntityManager em = null;
 	    EntityTransaction transaction = null;
 	    boolean success = false;
@@ -208,10 +226,10 @@ public class StudentRepository {
 	        transaction = em.getTransaction();
 	        transaction.begin();
 	        
-	        Query query = em.createQuery("UPDATE StudentBean s SET s.status = :deleteStatus WHERE s.id = :studentId");
+	        Query query = em.createQuery("UPDATE StudentBean s SET s.deleted = :deleteStatus WHERE s.id = :studentId");
 	        query.setParameter("deleteStatus", delete);
 	        query.setParameter("studentId", id);
-	        System.out.println(delete+id);
+	       
 	        int rowsAffected = query.executeUpdate();
 	        transaction.commit();
 
@@ -287,6 +305,42 @@ public class StudentRepository {
 				}
 		        return names.toString();
 		    }
+		//for report end
+
+		  public int save(StudentBean managedStudent) {
+			    EntityManager em = null;
+			    EntityTransaction transaction = null;
+			    int result = 0;
+			    
+			    try {
+			        em = JPAUtil.getEntityManagerFactory().createEntityManager();
+			        transaction = em.getTransaction();
+			        transaction.begin();
+			        
+			        if (managedStudent.getId() != 0) {
+			            // If the student has an ID, it means it already exists in the database
+			            em.merge(managedStudent); // Use merge to update the existing record
+			        } else {
+			            // If the student does not have an ID, it's a new record
+			            em.persist(managedStudent); // Persist the managedStudent entity
+			        }
+			        
+			        transaction.commit(); // Commit the transaction
+			        result = 1; // Operation successful
+			    } catch (Exception e) {
+			        if (transaction != null && transaction.isActive()) {
+			            transaction.rollback(); // Rollback the transaction if an exception occurs
+			        }
+			        e.printStackTrace(); // Handle exception properly in your application
+			    } finally {
+			        if (em != null) {
+			            em.close(); // Close the EntityManager
+			        }
+			    }
+
+			    return result;
+			}
+
 		  
-		  //for report end
+		  
 }

@@ -1,11 +1,13 @@
 package student.com.controllers;
 import java.util.List;
 
+import org.apache.poi.util.SystemOutLogger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -80,7 +82,7 @@ public class CourseController {
 
 	@RequestMapping(value = "/updateCourse/{id}", method = RequestMethod.GET)
 	public ModelAndView updateCourse(@PathVariable int id) {
-
+		System.out.println();
 		CourseDto courseDto = courseService.getCourseById(id);
 		ModelAndView m = new ModelAndView("updateCourse");
 		m.addObject("courseDto", courseDto);
@@ -89,7 +91,7 @@ public class CourseController {
 
 	@RequestMapping(value = "/updateCourse/{id}", method = RequestMethod.POST)
 	public String updateCourseProcess(@ModelAttribute("courseDto") @Validated CourseDto courseDto, BindingResult bs, ModelMap m) {
-
+		
 		if (bs.hasErrors()) {
 			m.addAttribute("error", "Invalid Category required");
 			return "updateCourse";
@@ -115,6 +117,27 @@ public class CourseController {
 		return m;
 	}
 
+	@RequestMapping(value = "/deleteCourse/{id}",  method = RequestMethod.GET)
+    public String deleteCourse(@PathVariable int id, ModelMap model) {
+		System.out.println("Hi C D");
+      int i = courseService.deleteCourse(id);
+      if (i == 0) {
+        model.addAttribute("error", "Delete Fail!!");
+      }
+      return "redirect:/viewCourse";
+    }
+
+	@RequestMapping(value = "/courseDetail/{id}", method = RequestMethod.GET)
+	  public String courseDetail(@PathVariable int id ,Model m) {
+	    
+	    CourseDto courseDto = courseService.getCourseById(id);
+	    m.addAttribute("course", courseDto);
+	    
+	    return "courseDetail";
+	  }     
 
 
-}
+
+}	
+	
+  

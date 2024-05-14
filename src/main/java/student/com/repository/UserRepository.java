@@ -8,9 +8,13 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.ParameterMode;
+import jakarta.persistence.Query;
 import jakarta.persistence.StoredProcedureQuery;
 import jakarta.persistence.TypedQuery;
+import student.com.models.Email;
+import student.com.models.OTP;
 import student.com.models.UserBean;
+import student.com.models.checkOTP;
 import student.com.service.JPAUtil;
 
 
@@ -212,6 +216,120 @@ public class UserRepository {
 			    }
 			    return userList;
 			}
+		   
+		   public UserBean getEmail(Email email) {
+			      EntityManager em = null;
+			      UserBean user = null; // Initialize user to null
+			      
+			      try {
+			          em = JPAUtil.getEntityManagerFactory().createEntityManager();
+			          
+			          List<UserBean> userList = em.createQuery("SELECT u FROM UserBean u WHERE u.email = :email", UserBean.class)
+			                                 .setParameter("email", email.getEmail())
+			                                 .getResultList(); 
+			          
+			          if (!userList.isEmpty()) {
+			              user = userList.get(0); 
+			          }
+			      } finally {
+			          if (em != null) {
+			              em.close();
+			          }
+			      }
+			      
+			      return user;
+			  }
+			  
+				public int insertOTP(OTP otp) {
+					int i=0;
+					EntityManager em = null;
+					
+					try {
+						em = JPAUtil.getEntityManagerFactory().createEntityManager();
+						em.getTransaction().begin();
+						em.persist(otp);
+						em.getTransaction().commit();
+					      i = 1;
+					    } finally {
+					      em.close();
+					    }
+					    return i;
+					  }
+				public void deleteExpiredOTP() {
+				    EntityManager em = null;
+				    try {
+				        em = JPAUtil.getEntityManagerFactory().createEntityManager();
+				        em.getTransaction().begin();
+				        
+				        // Query to delete expired OTP entries
+				        em.createQuery("DELETE FROM OTP o WHERE o.otpExpired <= CURRENT_TIMESTAMP").executeUpdate();
+				        
+				        em.getTransaction().commit();
+				    } finally {
+				        if (em != null) {
+				            em.close();
+				        }
+				    }
+				}
+				
+				
+				 public OTP getOTP( checkOTP cotp) {
+				      EntityManager em = null;
+				      OTP otp  = null; 
+				      
+				      try {
+				          em = JPAUtil.getEntityManagerFactory().createEntityManager();
+				          
+				          List<OTP> otpList = em.createQuery("SELECT o FROM OTP o WHERE o.otp = :otp", OTP.class)
+				                                 .setParameter("otp", cotp.getOtp())
+				                                 .getResultList(); 
+				          System.out.print("otp" +cotp.getOtp());
+				          if (!otpList.isEmpty()) {
+				              otp = otpList.get(0); 
+				          }
+				      } finally {
+				          if (em != null) {
+				              em.close();
+				          }
+				      }
+				      
+				      return otp;
+				  }
+				 
+				 public boolean updatePassword(String email, String newPassword) {
+					    boolean success = false;
+					    EntityManager em = null;
+					    try {
+					        em = JPAUtil.getEntityManagerFactory().createEntityManager();
+					        em.getTransaction().begin();
+
+					        Query query = em.createQuery("UPDATE UserBean u SET u.password = :newPassword WHERE u.email = :email");
+					        query.setParameter("newPassword", newPassword);
+					        query.setParameter("email", email);
+					        
+					        int rowsAffected = query.executeUpdate();
+					        if (rowsAffected > 0) {
+					           
+					            success = true;
+					            em.getTransaction().commit();
+					        } else {
+					           
+					            System.err.println("No rows affected, password update failed for email: " + email);
+					            em.getTransaction().rollback();
+					        }
+					    } catch (Exception e) {
+					        e.printStackTrace();
+					        System.err.println("Password update failed due to exception: " + e.getMessage());
+					        if (em != null && em.getTransaction().isActive()) {
+					            em.getTransaction().rollback();
+					        }
+					    } finally {
+					        if (em != null) {
+					            em.close();
+					        }
+					    }
+					    return success;
+					}
 
 
 }

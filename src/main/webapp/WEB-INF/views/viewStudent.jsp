@@ -27,21 +27,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        function deleteStudent(studentId) {
-        	console.log("delete")
-            $.ajax({
-                url: "/status/" + studentId,
-                type: "DELETE",
-                success: function(response) {
-                    alert("Student deleted successfully");
-                    
-                },
-                error: function(xhr, status, error) {
-                    alert("Failed to delete student");
-                   
-                }
-            });
+    function confirmDelete(id) {
+        if (confirm("Are you sure you want to delete this Student?")) {
+            location.href = '/studentRegistrationSystem-mvc-jpa/deleteStudent/' + id;
         }
+    }
     </script>
 </head>
 <body>
@@ -73,7 +63,7 @@
                          
                           <th> Dob </th>
                           <th> Gender </th>
-                          <th> Email </th>
+                          
                           <th> Phone </th>
                           <th> Education </th>
                           <th> Attend </th>
@@ -91,7 +81,7 @@
                           
                           <td>${student.dob}</td>
                           <td>${student.gender}</td>
-                          <td>${student.email}</td>
+                        
                           <td>${student.phone}</td>
                           <td>${student.education}</td>
                           <td class="align-middle"><c:forEach items="${student.courses}"
@@ -114,7 +104,7 @@
                           <td>
 	                     <i class="fa-solid fa-pen-to-square text-primary" onclick="location.href = '/studentRegistrationSystem-mvc-jpa/updateStudent/${student.id}';"></i>
 	               		
-						<i class="fa-solid fa-trash text-danger" style="margin-left: 20px;" onclick="deleteStudent(${student.id})"></i>
+						<i class="fa-solid fa-trash text-danger" style="margin-left: 20px;" onclick="confirmDelete('${student.id}')"></i>
 
 	                    </td>
                           <c:set var="displayedIndex" value="${displayedIndex + 1}" />

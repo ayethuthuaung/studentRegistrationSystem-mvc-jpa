@@ -46,6 +46,9 @@
                           <th> No </th>
                           <th> Code </th>
                           <th> Name </th>
+                          <th> Price </th>
+                          <th> Month </th>
+                          <th> Period </th>
                           <th> Action </th>
                         </tr>
                       </thead>
@@ -56,9 +59,15 @@
                           <td>${displayedIndex}</td>
                           <td>${course.courseId}</td>
                           <td>${course.name}</td>
-                          <td><i class="fa-solid fa-pen-to-square text-primary" onclick="location.href = '/studentRegistrationSystem-mvc-jpa/updateCourse/${course.id}';">
-	                        <i class="fa-solid fa-trash text-danger" style="margin-left: 20px;" onclick="deleteCourse(${courseId})"></i>
-	                    </i></td>
+                          <td>${course.price}</td>
+                          <td>${course.month}</td>
+                          <td>${course.period}</td>
+                    
+                      <td>
+                      <i class="fa-solid fa-pen-to-square text-primary" onclick="location.href = '/studentRegistrationSystem-mvc-jpa/updateCourse/${course.id}';"></i>
+	               		
+						<i class="fa-solid fa-trash text-danger" style="margin-left: 20px;" onclick="confirmDelete('${course.id}')"></i>
+                      </td>
                           <c:set var="displayedIndex" value="${displayedIndex + 1}" />
                         </tr>
                         
@@ -101,6 +110,11 @@
     <script src="https://cdn.datatables.net/2.0.1/js/dataTables.bootstrap5.js"></script>
 
     <script>
+    function confirmDelete(courseId) {
+        if (confirm("Are you sure you want to delete this course?")) {
+            location.href = '/studentRegistrationSystem-mvc-jpa/deleteCourse/' + courseId;
+        }
+    }
       $(document).ready(function() {
             // Initialize DataTable
             $('#userTable').DataTable({
